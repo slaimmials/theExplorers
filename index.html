@@ -217,17 +217,6 @@
     </div>
     
     <script>
-        // Добавляем эффект параллакса для фона
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            document.body.style.backgroundPosition = `
-                ${x * 20}px ${y * 20}px,
-                ${100 - x * 20}px ${100 - y * 20}px
-            `;
-        });
-        
         // Анимация карточек при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.doc-card');
