@@ -3,78 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Explorers docs</title>
+    <title>The Explorers - Документация</title>
     <style>
+        :root {
+            --main-bg: #0f0f15;
+            --card-bg: #1a1a25;
+            --accent: #8b0000;
+            --text: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --highlight: #b8860b;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .doc-list {
-            list-style-type: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text);
+            margin: 0;
             padding: 0;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(184, 134, 11, 0.1) 0%, transparent 50%);
+            min-height: 100vh;
         }
-        .doc-item {
-            margin-bottom: 10px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-        .doc-item:hover {
-            background-color: #e0e0e0;
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
         }
+        
+        h1 {
+            color: var(--highlight);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 0;
+        }
+        
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .doc-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .doc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .doc-card:hover::before {
+            opacity: 1;
+        }
+        
+        .doc-title {
+            color: var(--highlight);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .doc-title::before {
+            content: '»';
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
         .doc-link {
             text-decoration: none;
-            color: #0066cc;
-            font-weight: bold;
+            color: inherit;
             display: block;
         }
+        
         .doc-description {
-            color: #666;
-            margin-top: 5px;
-            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .doc-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .glow {
+            text-shadow: 0 0 10px rgba(184, 134, 11, 0.5);
+        }
+        
+        /* Новые стили для кликабельных элементов */
+        .doc-card a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            text-indent: -9999px;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .card-content * {
+            pointer-events: none;
+        }
+        
+        @media (max-width: 768px) {
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    
-    <ul class="doc-list">
-        <!-- Примеры элементов списка - замените на свои -->
-        <li class="doc-item">
-            <a href="https://slaimmials.github.io/theExplorers/Помещения.html" class="doc-link">Описание помещений</a>
-            <div class="doc-description">Список всех помещений с их детальным описанием</div>
-        </li>
+    <div class="container">
+        <header>
+            <h1 class="glow">The Explorers</h1>
+            <p class="subtitle">Документация по проекту "Гиперборея"</p>
+        </header>
         
-        <li class="doc-item">
-            <a href="https://slaimmials.github.io/theExplorers/Сюжет.html" class="doc-link">Сюжет</a>
-            <div class="doc-description">Сюжет игры и детали</div>
-        </li>
-        
-        <li class="doc-item">
-            <a href="https://slaimmials.github.io/theExplorers/....html" class="doc-link">...</a>
-            <div class="doc-description">...</div>
-        </li>
-        
-        <!-- Добавьте здесь свои ссылки -->
-        <!--
-        <li class="doc-item">
-            <a href="ВАША_ССЫЛКА" class="doc-link">НАЗВАНИЕ ДОКУМЕНТА</a>
-            <div class="doc-description">Описание документа</div>
-        </li>
-        -->
-    </ul>
+        <div class="docs-grid">
+            <div class="doc-card">
+                <a href="https://slaimmials.github.io/theExplorers/Помещения.html" class="doc-link" aria-label="Описание помещений"></a>
+                <div class="card-content">
+                    <h2 class="doc-title">Описание помещений</h2>
+                    <div class="doc-description">
+                        Полный гид по всем локациям комплекса "Гиперборея". Детальные описания комнат, скрытые зоны и аномалии.
+                    </div>
+                    <div class="doc-meta">
+                        <span>12 помещений</span>
+                        <span>Обновлено: 10.04.2025</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="doc-card">
+                <a href="https://slaimmials.github.io/theExplorers/Сюжет.html" class="doc-link" aria-label="Сюжет и лор"></a>
+                <div class="card-content">
+                    <h2 class="doc-title">Сюжет и лор</h2>
+                    <div class="doc-description">
+                        Полная история проекта "Гиперборея". Хронология событий, персонажи и скрытые детали сюжета.
+                    </div>
+                    <div class="doc-meta">
+                        <span>5 глав</span>
+                        <span>3 концовки</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script>
-        // Можно добавить простой поиск, если документов будет много
-        document.addEventListener('DOMContentLoaded', function() {
-            // Здесь можно добавить JavaScript при необходимости
+        // Добавляем эффект параллакса для фона
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundPosition = `
+                ${x * 20}px ${y * 20}px,
+                ${100 - x * 20}px ${100 - y * 20}px
+            `;
+        });
+        
+        // Анимация карточек при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.doc-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+            
+            // Добавляем обработчик клика для всей карточки
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Проверяем, не был ли клик на самом деле по ссылке
+                    if (e.target.tagName !== 'A') {
+                        const link = this.querySelector('a');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>
