@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проект Гиперборея - Сюжет</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background-color: #121212;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background-color: #0f0f0f;
+        }
+        
+        .chapter-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #1e1e1e;
+            border-left: 3px solid #3a3a3a;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 3px;
+        }
+        
+        .chapter-item:hover {
+            background-color: #2a2a2a;
+            border-left-color: #555;
+        }
+        
+        .chapter-item.active {
+            background-color: #333;
+            border-left-color: #8b0000;
+            font-weight: bold;
+        }
+        
+        .chapter-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #d4d4d4;
+        }
+        
+        .chapter-type {
+            font-size: 12px;
+            color: #8b8b8b;
+        }
+        
+        h1, h2, h3, h4 {
+            color: #c9c9c9;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-top: 25px;
+            color: #b8860b;
+        }
+        
+        h3 {
+            font-size: 18px;
+            color: #8b0000;
+        }
+        
+        h4 {
+            font-size: 16px;
+            color: #a0522d;
+        }
+        
+        p, li {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        strong {
+            color: #d4d4d4;
+        }
+        
+        em {
+            color: #a8a8a8;
+            font-style: italic;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 20px 0;
+        }
+        
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background-color: #a52a2a;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            
+            .content {
+                height: calc(100vh - 200px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Сюжетные главы</h2>
+        <div class="chapter-item" data-chapter="prologue">
+            <div class="chapter-title">Пролог: Завязка (1989 год)</div>
+            <div class="chapter-type">Введение</div>
+        </div>
+        <div class="chapter-item" data-chapter="chapter1">
+            <div class="chapter-title">Глава 1: Первые шаги в аду</div>
+            <div class="chapter-type">Основной сюжет</div>
+        </div>
+        <div class="chapter-item" data-chapter="chapter2">
+            <div class="chapter-title">Глава 2: Сердце тьмы</div>
+            <div class="chapter-type">Основной сюжет</div>
+        </div>
+        <div class="chapter-item" data-chapter="chapter3">
+            <div class="chapter-title">Глава 3: Развязка</div>
+            <div class="chapter-type">Завершение</div>
+        </div>
+        <div class="chapter-item" data-chapter="epilogue">
+            <div class="chapter-title">Эпилог</div>
+            <div class="chapter-type">Финальные сцены</div>
+        </div>
+        <div class="chapter-item" data-chapter="extras">
+            <div class="chapter-title">Дополнительные элементы</div>
+            <div class="chapter-type">Лор и механики</div>
+        </div>
+    </div>
+    
+    <div class="content" id="content">
+        <h1>The Explorers: Проект Гиперборея</h1>
+        <p><strong>Жанр:</strong> Психологический хоррор с элементами мистики, научной фантастики и survival-механикой.</p>
+        <p>Выберите главу из списка слева для просмотра подробного описания.</p>
+    </div>
+    
+    <button class="back-button" onclick="window.location.href='https://slaimmials.github.io/theExplorers/index.html'">Вернуться в меню</button>
+    
+    <script>
+        // Описания глав
+        const chapterDescriptions = {
+            prologue: `
+                <p><strong>Текст вступительного ролика:</strong>
+                    <br><em>"20 октября 1989 года. Секретный научный комплекс «Гиперборея», расположенный в глубине сибирской тайги, прекратил выходить на связь. Последняя запись, переданная по зашифрованному каналу, содержала лишь шепот: «Они вошли. Закройте двери. Не смотрите в тени...»</em></p>
+                <p><strong>Сцена:</strong></p>
+                <ul>
+                    <li>Камера медленно движется по <strong>заснеженному лесу</strong>, показывая <strong>заброшенный КПП</strong> с разбитым шлагбаумом.</li>
+                    <li>Ветер шевелит <strong>полуразрушенную табличку</strong> с надписью <em>"Объект №814. Вход воспрещён"</em>.</li>
+                    <li>На земле — <strong>свежие следы шин</strong> (кто-то был здесь недавно).</li>
+                </ul>
+                <p><strong>Переход к современности (2024 год):</strong></p>
+                <ul>
+                    <li>Игрок берет на себя роль <strong>журналиста-расследователя</strong> (или ученого), который приехал с группой для съемок документального фильма о пропавшей экспедиции.</li>
+                    <li>Внезапно <strong>все члены группы пропадают</strong>, а игрок остается один перед <strong>запертой дверью комплекса</strong>.</li>
+                </ul>
+            `,
+            chapter1: `
+                <h3>1.1. КПП и входная зона</h3>
+                <ul>
+                    <li>
+                        <p><strong>Осмотр:</strong></p>
+                        <ul>
+                            <li>Разбитая будка охраны. <strong>Труп в противогазе</strong> (если подойти — его голова резко дергается).</li>
+                            <li>На столе — <strong>журнал учета</strong> с последней записью:
+                                <br><em>"19.10.1989. Образец 9 активировался. Оно говорит через зеркала. Мы не отвечаем."</em></li>
+                            <li><strong>Автомат с доступом</strong> требует ключ-карту (лежит в кармане мертвого охранника).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>Первая угроза:</strong></p>
+                        <ul>
+                            <li>После взятия карты <strong>включается аварийное освещение</strong>, и в окне мелькает <strong>человеческая фигура</strong> (исчезает при попытке приблизиться).</li>
+                            <li>Звук <strong>шагов за спиной</strong>, но при обороте — никого.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>1.2. Центральный коридор (Зона "Альфа")</h3>
+                <ul>
+                    <li>
+                        <p><strong>Атмосфера:</strong></p>
+                        <ul>
+                            <li>Стены покрыты <strong>странными символами</strong> (при приближении слышен шепот).</li>
+                            <li><strong>Трупы ученых</strong> в неестественных позах (один «вплавлен» в стену).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>Механика:</strong></p>
+                        <ul>
+                            <li><strong>Тень</strong>, которая движется, только когда игрок не смотрит (механика SCP-173).</li>
+                            <li><strong>Головоломка:</strong> Нужно активировать 3 выключателя, чтобы открыть дверь в лабораторию.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>Записка:</strong>
+                            <br><em>"Они не любят свет. Но тьма — их дом."</em></p>
+                    </li>
+                </ul>
+            `,
+            chapter2: `
+                <h3>2.1. Лабораторный сектор (Зона "Омега")</h3>
+                <h4>Комната 1 – Биологическая лаборатория</h4>
+                <ul>
+                    <li>
+                        <p><strong>Осмотр:</strong></p>
+                        <ul>
+                            <li>Разбитые аквариумы с <strong>мутировавшими существами</strong>.</li>
+                            <li>Включение света вызывает <strong>атаку щупалец</strong> (нужно передвигаться в темноте).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>Записка:</strong>
+                            <br><em>"Образцы реагируют на свет. Не включать без необходимости."</em></p>
+                    </li>
+                </ul>
+                <h4>Комната 2 – Кабинет главного ученого</h4>
+                <ul>
+                    <li>
+                        <p><strong>Осмотр:</strong></p>
+                        <ul>
+                            <li><strong>Зеркало</strong>, в котором отражение живет своей жизнью.</li>
+                            <li><strong>Дневник директора:</strong>
+                                <br><em>"Оно показывает нам наши страхи. Оно питается ими."</em></li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>Комната 3 – Экспериментальная камера</h4>
+                <ul>
+                    <li>
+                        <p><strong>Осмотр:</strong></p>
+                        <ul>
+                            <li>Разорванная клетка с надписью <em>"Образец 9"</em>.</li>
+                            <li><strong>Голос из динамика:</strong> <em>"Помоги... мне..."</em> (если ответить — превращается в рык).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>2.2. Нижний уровень (Зона "Х")</h3>
+                <ul>
+                    <li>
+                        <p><strong>Порталная шахта:</strong></p>
+                        <ul>
+                            <li>Гигантское <strong>металлическое кольцо</strong> с пульсирующей черной сферой внутри.</li>
+                            <li><strong>Трупы ученых</strong> в позах молитвы (как будто они что-то «призывали»).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>Главный антагонист:</strong></p>
+                        <ul>
+                            <li><strong>"Тот, кто ждёт"</strong> — существо, которое <strong>манипулирует пространством</strong>.</li>
+                            <li>Его нельзя убить — можно только <strong>замедлить</strong> (например, ослепив прожектором).</li>
+                        </ul>
+                    </li>
+                </ul>
+            `,
+            chapter3: `
+                <h3>Варианты концовок:</h3>
+                <ol>
+                    <li>
+                        <p><strong>"Жертва"</strong> (Закрыть портал):</p>
+                        <ul>
+                            <li>Игрок активирует <strong>аварийный протокол</strong>, жертвуя собой.</li>
+                            <li>Комплекс взрывается, но <strong>в последнем кадре</strong> где-то включается монитор с надписью <em>"Омега-9: АКТИВИРОВАН"</em>.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>"Бегство"</strong> (Сбежать):</p>
+                        <ul>
+                            <li>Игрок выходит на поверхность, но <strong>машина не заводится</strong>.</li>
+                            <li>В зеркале заднего вида <strong>мелькает тень</strong>.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><strong>"Уничтожение"</strong> (Взорвать реактор):</p>
+                        <ul>
+                            <li>Комплекс уничтожен, но <strong>на его месте остается черная дыра</strong>.</li>
+                        </ul>
+                    </li>
+                </ol>
+            `,
+            epilogue: `
+                <p><strong>Сцена после титров:</strong></p>
+                <ul>
+                    <li>Камера показывает <strong>новую экспедицию</strong>, которая находит <strong>дневник игрока</strong>.</li>
+                    <li>Последняя запись:
+                        <br><em>"Оно не умерло. Оно просто ждёт следующего гостя..."</em></li>
+                </ul>
+            `,
+            extras: `
+                <ul>
+                    <li><strong>Скрытые комнаты</strong> (например, <strong>комната сна</strong> с кошмарами).</li>
+                    <li><strong>Альтернативные записи</strong>, раскрывающие лор (например, <strong>эксперименты над людьми</strong>).</li>
+                    <li><strong>Динамический звук</strong> (шепот, шаги, скримеры).</li>
+                </ul>
+            `
+        };
+
+        // Обработчик кликов на главы
+        document.querySelectorAll('.chapter-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Удаляем активный класс у всех элементов
+                document.querySelectorAll('.chapter-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Добавляем активный класс к текущему элементу
+                this.classList.add('active');
+                
+                // Получаем ID главы
+                const chapterId = this.getAttribute('data-chapter');
+                
+                // Отображаем описание главы
+                document.getElementById('content').innerHTML = `
+                    <h1>${this.querySelector('.chapter-title').textContent}</h1>
+                    ${chapterDescriptions[chapterId] || '<p>Описание этой главы пока недоступно.</p>'}
+                `;
+            });
+        });
+
+        // Активируем первую главу по умолчанию
+        document.querySelector('.chapter-item').click();
+    </script>
+</body>
+</html>
